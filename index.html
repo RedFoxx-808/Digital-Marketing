@@ -1,0 +1,171 @@
+<!-- file: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rhay's Bowling Shop</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #004080, #00bfff);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      color: #ffcc00;
+      text-shadow: 2px 2px #003366;
+      margin-bottom: 20px;
+    }
+
+    .filter-bar {
+      background-color: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 15px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    input, select {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      outline: none;
+      color: #004080;
+    }
+
+    input {
+      width: 200px;
+    }
+
+    select {
+      background-color: #ffcc00;
+      color: #004080;
+      font-weight: bold;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff9933;
+      transform: scale(1.05);
+    }
+
+    .results {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .item {
+      background-color: white;
+      color: #004080;
+      border-radius: 10px;
+      width: 220px;
+      margin: 10px;
+      padding: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+
+    .item:hover {
+      transform: scale(1.05);
+    }
+
+    .shape {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ff6600, #cc3300);
+    }
+  </style>
+</head>
+<body>
+  <h1>🎳 Rhay's Bowling Shop 🎳</h1>
+
+  <div class="filter-bar">
+    <input type="text" id="searchBox" placeholder="Search for items...">
+    <select id="filterType">
+      <option value="all">All Types</option>
+      <option value="ball">Bowling Balls</option>
+      <option value="equipment">Equipment</option>
+      <option value="bag">Bags</option>
+    </select>
+    <select id="filterBrand">
+      <option value="all">All Brands</option>
+      <option value="Storm">Storm</option>
+      <option value="Motiv">Motiv</option>
+      <option value="Hammer">Hammer</option>
+      <option value="Brunswick">Brunswick</option>
+      <option value="Roto Grip">Roto Grip</option>
+    </select>
+    <button onclick="searchItems()">Search</button>
+  </div>
+
+  <div class="results" id="results"></div>
+
+  <script>
+    const items = [
+      { name: "Storm Phaze II Bowling Ball", type: "ball", brand: "Storm" },
+      { name: "Motiv Venom Shock Bowling Ball", type: "ball", brand: "Motiv" },
+      { name: "Hammer Black Widow 2.0 Bowling Ball", type: "ball", brand: "Hammer" },
+      { name: "Brunswick Rhino Bowling Ball", type: "ball", brand: "Brunswick" },
+      { name: "Roto Grip Idol Helios Bowling Ball", type: "ball", brand: "Roto Grip" },
+      { name: "Storm PowerGrip Gloves", type: "equipment", brand: "Storm" },
+      { name: "Motiv Wrist Support", type: "equipment", brand: "Motiv" },
+      { name: "Hammer ProCarry Bag", type: "bag", brand: "Hammer" },
+      { name: "Brunswick MegaRoller Bag", type: "bag", brand: "Brunswick" },
+      { name: "Roto Grip TurboSpin Shoes", type: "equipment", brand: "Roto Grip" }
+    ];
+
+    function searchItems() {
+      const query = document.getElementById("searchBox").value.toLowerCase();
+      const filterType = document.getElementById("filterType").value;
+      const filterBrand = document.getElementById("filterBrand").value;
+      const resultsDiv = document.getElementById("results");
+      resultsDiv.innerHTML = "";
+
+      const filtered = items.filter(item => {
+        const matchesSearch = item.name.toLowerCase().includes(query);
+        const matchesType = filterType === "all" || item.type === filterType;
+        const matchesBrand = filterBrand === "all" || item.brand === filterBrand;
+        return matchesSearch && matchesType && matchesBrand;
+      });
+
+      if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>No items found.</p>";
+        return;
+      }
+
+      filtered.forEach(item => {
+        const div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <div class="shape"></div>
+          <h3>${item.name}</h3>
+          <p><strong>Type:</strong> ${item.type}</p>
+          <p><strong>Brand:</strong> ${item.brand}</p>
+        `;
+        resultsDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
